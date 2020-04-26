@@ -1,0 +1,64 @@
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+public class divapplet extends JFrame implements ActionListener
+{
+	JButton b1,b2;
+	JTextField t1,t2,t3;
+	JLabel l1,l2;
+	divapplet()
+	{
+	b1=new JButton("Compute");
+	b2=new JButton("Clear");
+	b1.addActionListener(this);
+	b2.addActionListener(this);
+	l1=new JLabel("Enter the numerator");
+	l2=new JLabel("Enetr the denoinator");
+	t1=new JTextField(15);
+	t2=new JTextField(15);
+	t3=new JTextField(15);
+	setLayout(new FlowLayout());
+	add(l1);
+	add(t1);
+	add(l2);
+	add(t2);
+	add(t3);
+	add(b1);
+	add(b2);
+	setSize(400,400);
+	setVisible(true);
+	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	}
+public void actionPerformed(ActionEvent e)
+{
+	if(e.getSource()==b1)
+	{
+		try
+		{
+			int n1=Integer.parseInt(t1.getText());
+			int n2=Integer.parseInt(t2.getText());
+			int r=n1/n2;
+			t3.setText(Integer.toString(r));
+		}
+		catch(NumberFormatException ex)
+		{
+			System.out.println("Number format exception");
+		}
+	}
+	else
+	{
+		if(e.getSource()==b2)
+		{
+			t1.setText("");
+			t2.setText("");
+			t3.setText("");
+		}
+	}
+
+}
+	public static void main(String args[])
+	{
+		divapplet z=new divapplet();
+	}
+}
+	

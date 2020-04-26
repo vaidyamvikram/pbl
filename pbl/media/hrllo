@@ -1,0 +1,9 @@
+li=[1,2,3,4]
+re=[li[i:j] for i in range(len(li)) for j in range(i+1,len(li)+1)]
+count=0
+for i in re:
+      print(i,end=" ")
+      if i.count(1)==i.count(2) and i.count(1)==i.count(3):
+            count+=1
+print()
+print(count)
