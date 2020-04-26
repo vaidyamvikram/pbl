@@ -221,7 +221,7 @@ def myteachings(request):
         p = default_storage.save(str(filename), ContentFile(filename.read()))
         tmp_file = os.path.join(settings.MEDIA_ROOT, p)
         update="We have recieved your file, we will verify it and let you know soon !"
-    return render(request,'myteachings.html',{'files':files,'update':update,'access':access,'path':path,'nme':nme})
+    return render(request,'myteachings.html',{'files':files,'update':update,'access':access})
 
 def add_to(request,para):
     crs = courses.objects.all()
