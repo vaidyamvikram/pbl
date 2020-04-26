@@ -183,31 +183,34 @@ def logout(request):
     auth.logout(request)
     return redirect('/index')
 def signup_teacher(request):
-    if request.method=="POST":
-        t_name = request.POST['name']
-        t_email = request.POST['email']
-        t_number = request.POST['number']
-        t_course = request.POST['course']
-        t_category = request.POST['category']
-        t_course_file =request.FILES['course_file']
-        if teacher.objects.filter(name=t_name).exists():
-            messages.info(request,"Username already exist")
-            return redirect('signup_teacher')
-        elif teacher.objects.filter(email=t_email).exists():
-            messages.info(request,"Email has been taken")
-            return redirect('signup_teacher')
-        else:
-            if User.objects.filter(username=t_name).exists():
-                table = teacher(name=t_name,email=t_email,number=t_number,course=t_course,course_file=t_course_file,category=t_category)
-                table.save()
-                messages.info(request,"You are successfully registered as a Teacher.")
+    if request.user.is_authenticated:
+        if request.method=="POST":
+            t_name = request.POST['name']
+            t_email = request.POST['email']
+            t_number = request.POST['number']
+            t_course = request.POST['course']
+            t_category = request.POST['category']
+            t_course_file =request.FILES['course_file']
+            if teacher.objects.filter(name=t_name).exists():
+                messages.info(request,"Username already exist")
+                return redirect('signup_teacher')
+            elif teacher.objects.filter(email=t_email).exists():
+                messages.info(request,"Email has been taken")
                 return redirect('signup_teacher')
             else:
-                messages.info(request,"Please, login as a member first")
-                return redirect('signup_teacher')
-        
+                if User.objects.filter(username=t_name).exists():
+                    table = teacher(name=t_name,email=t_email,number=t_number,course=t_course,course_file=t_course_file,category=t_category)
+                    table.save()
+                    messages.info(request,"You are successfully registered as a Teacher.")
+                    return redirect('signup_teacher')
+                else:
+                    messages.info(request,"Please, login as a member first")
+                    return redirect('signup_teacher')
+            
+        else:
+            return render(request,'signup_teacher.html')
     else:
-        return render(request,'signup_teacher.html')
+        return redirect('/signup')
 def myteachings(request):
     files = teacher.objects.filter(name=request.user.username)
     access=False
@@ -224,20 +227,23 @@ def myteachings(request):
     return render(request,'myteachings.html',{'files':files,'update':update,'access':access})
 
 def add_to(request,para):
-    crs = courses.objects.all()
-    access=False
     if request.user.is_authenticated:
-        if teacher.objects.filter(name=request.user.username).exists():
-            access=True
-    if request.method=="POST":
-        s=""
-        if mycourses.objects.filter(name=request.user.username,mycourse=para).exists():
-            s="This course is already in your mycourses"
-            return render(request,'course.html',{'crs':crs,'s':s,'access':access})
-        c=mycourses(name=request.user.username,mycourse=para)
-        c.save()
-        return redirect('mycourse')
-    return render(request,'course.html',{'crs':crs,'access':access})
+        crs = courses.objects.all()
+        access=False
+        if request.user.is_authenticated:
+            if teacher.objects.filter(name=request.user.username).exists():
+                access=True
+        if request.method=="POST":
+            s=""
+            if mycourses.objects.filter(name=request.user.username,mycourse=para).exists():
+                s="This course is already in your mycourses"
+                return render(request,'course.html',{'crs':crs,'s':s,'access':access})
+            c=mycourses(name=request.user.username,mycourse=para)
+            c.save()
+            return redirect('mycourse')
+        return render(request,'course.html',{'crs':crs,'access':access})
+    else:
+        return redirect('/signup')
 
 def mycourse(request):
     access=False
