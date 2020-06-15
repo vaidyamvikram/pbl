@@ -166,6 +166,7 @@ def contact(request):
         send_mail(subject,mess,from_email,[to_email])
         success="Mail sent successfully!"
     return render(request,'contact.html',{'access':access,'success':success})
+    
 def category(request,value):
     access=False
     if request.user.is_authenticated:
@@ -182,6 +183,7 @@ def category(request,value):
 def logout(request):
     auth.logout(request)
     return redirect('/index')
+
 def signup_teacher(request):
     if request.user.is_authenticated:
         if request.method=="POST":
@@ -191,6 +193,7 @@ def signup_teacher(request):
             t_course = request.POST['course']
             t_category = request.POST['category']
             t_course_file =request.FILES['course_file']
+            t_link=request.POST['link']
             if teacher.objects.filter(name=t_name).exists():
                 messages.info(request,"Username already exist")
                 return redirect('signup_teacher')
@@ -199,10 +202,15 @@ def signup_teacher(request):
                 return redirect('signup_teacher')
             else:
                 if User.objects.filter(username=t_name).exists():
-                    table = teacher(name=t_name,email=t_email,number=t_number,course=t_course,course_file=t_course_file,category=t_category)
+                    table = teacher(name=t_name,email=t_email,number=t_number,course=t_course,course_file=t_course_file,category=t_category,link=t_link)
                     table.save()
                     messages.info(request,"You are successfully registered as a Teacher.")
-                    return redirect('signup_teacher')
+                    from_email=request.user.email
+                    to_email=settings.EMAIL_HOST_USER
+                    subject="New Teacher Signup!"
+                    mess="A new user "+str(request.user.email)+" has signed up as a teacher, update him/her immediately."
+                    send_mail(subject,mess,from_email,[to_email])
+                    return redirect('myteachings')
                 else:
                     messages.info(request,"Please, login as a member first")
                     return redirect('signup_teacher')
@@ -210,7 +218,8 @@ def signup_teacher(request):
         else:
             return render(request,'signup_teacher.html')
     else:
-        return redirect('/signup')
+        return render(request,'signup_teacher.html')
+
 def myteachings(request):
     files = teacher.objects.filter(name=request.user.username)
     access=False
@@ -224,6 +233,11 @@ def myteachings(request):
         p = default_storage.save(str(filename), ContentFile(filename.read()))
         tmp_file = os.path.join(settings.MEDIA_ROOT, p)
         update="We have recieved your file, we will verify it and let you know soon !"
+        from_email=request.user.email
+        to_email=settings.EMAIL_HOST_USER
+        subject="New File from a teacher!"
+        mess="A new file has been uploaded by user "+str(request.user.email)+", update him/her immediately."
+        send_mail(subject,mess,from_email,[to_email])
     return render(request,'myteachings.html',{'files':files,'update':update,'access':access})
 
 def add_to(request,para):
