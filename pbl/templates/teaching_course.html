@@ -1,0 +1,144 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>CourseUni</title>
+	<meta charset="UTF-8">
+	<meta name="description" content="CourseUni">
+	<meta name="keywords" content="courseuni, education, creative, html">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-- Favicon -->   
+	<link href="{% static 'img/favicon.ico' %}" rel="shortcut icon"/>
+	<!--  -->
+	<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}"/>
+	<link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}"/>
+	<link rel="stylesheet" href="{% static 'css/owl.carousel.css' %}"/>
+	<link rel="stylesheet" href="{% static 'css/style.css' %}"/>
+
+
+</head>
+<body>
+	<!-- Page Preloder -->
+	<div id="preloder">
+		<div class="loader"></div>
+	</div>
+
+	<!-- Header section -->
+	<header class="header-section">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-3 col-md-3">
+					<div class="site-logo">
+						<h2 style="color:crimson; font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif">COURSE UNI</h2>
+					</div>
+					<div class="nav-switch">
+						<i class="fa fa-bars"></i>
+					</div>
+				</div>
+				<div class="col-lg-9 col-md-9">
+					{% if user.is_authenticated %}
+					<a href="logout" class="site-btn header-btn">Logout</a>
+					{% else %}
+					<a href="/login" class="site-btn header-btn">Login</a>
+					{% endif %}
+					<nav class="main-menu">
+						<ul>
+							<li><a href="index">Home</a></li>
+							<li><a href="course">Courses</a></li>
+							<li><a href="contact">Contact</a></li>
+							{% if user.is_authenticated %}
+							<li><a href="mycourse">My courses</a></li>
+							{% endif %}
+							{% if user.is_authenticated and access %}
+							<li><a href="myteachings">My teachings</a></li>
+							{% endif %}
+						</ul>
+					</nav>
+				</div>
+			</div>
+		</div>
+	</header>
+	<!-- Page info -->
+	<div class="page-info-section set-bg" data-setbg="{% static 'img/page-bg/4.jpg' %}">
+		<div class="container">
+			<div class="site-breadcrumb">
+				<a href="index">Home</a>
+				<span>Myteachings</span>
+			</div>
+		</div>
+	</div>
+	<!-- Page info end -->
+
+    <section class="categories-section spad">
+		<div class="container">
+			<div class="section-title">
+				<!-- course name -->
+			</div>
+                <!-- file details -->
+			</div>
+			
+            
+		</div>
+	</section>
+	<br>
+	
+	<!-- footer section -->
+	<footer class="footer-section spad pb-0">
+		<div class="footer-top">
+			<div class="footer-warp">
+				<div class="row">
+					<div class="widget-item">
+						<h4>Contact Info</h4>
+						<ul class="contact-list">
+							<li>CMREC <br>Kandlakoya, Medchal</li>
+							<li>+91 810 640 6962</li>
+							<li>vaidyamvikramkumar@gmail.com</li>
+						</ul>
+					</div>
+					<div class="widget-item">
+						<h4>Vikram Kumar</h4>
+						<ul>
+							<li>17/12,Suraram,HYD</li>
+							<li>+91 8106406962</li>
+							<li>vaidyamvikramkumar@gmail.com</li>
+						</ul>
+					</div>
+					<div class="widget-item">
+						<h4>Neeharika</h4>
+						<ul>
+							<li>CMREC,Kandlakoya,HYD</li>
+							<li>+91 96406 81817</li>
+							<li>neeharikakoniki@gmail.com</li>
+						</ul>
+					</div>
+					<div class="widget-item">
+						<h4>Vamshi</h4>
+						<ul>
+							<li>CMREC,Kandlakoya,HYD</li>
+							<li>+91 90527 61284</li>
+							<li>beeramvamshi@gmail.com</li>
+						</ul>
+					</div>
+					<div class="widget-item">
+						<h4>Vijay</h4>
+						<ul>
+							<li>CMREC,Kandlakoya,HYD</li>
+							<li>+91 72888 75911</li>
+							<li>vijaykumar@gmail.com</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</footer> 
+	<!-- footer section end -->
+
+
+	<!--====== Javascripts & Jquery ======-->
+	<script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
+	<script src="{% static 'js/bootstrap.min.js' %}"></script>
+	<script src="{% static 'js/mixitup.min.js' %}"></script>
+	<script src="{% static 'js/circle-progress.min.js' %}"></script>
+	<script src="{% static 'js/owl.carousel.min.js' %}"></script>
+	<script src="{% static 'js/main.js' %}"></script>
+</html>
